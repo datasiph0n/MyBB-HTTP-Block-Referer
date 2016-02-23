@@ -43,7 +43,8 @@ function referrer_main()
 			}
 			$locka = strposa($referrerz, $array);
 			if($locka == 1) {
-				header('Location: http://google.com');
+				$host = $mybb->settings["redirect_to"];
+				header('Location: '+$host);
 			}
 		}
 	}
@@ -84,6 +85,13 @@ function referrer_install() // Called when "Install" button is pressed
 	        'value' => "hackforums.net,",
 	        'disporder' => 2
 	    ),
+	    'redirect_to' => array(
+	    	'title' => 'Where do we redirect them?:',
+	    	'description' => 'Where do we send them:',
+	    	'optionscode' => 'text',
+	    	'value' => 'http://google.com',
+	    	'disporder' => 3
+	    ),
 	);
 	foreach($setting_array as $name => $setting)
 	{
@@ -108,7 +116,7 @@ function referrer_uninstall()
 {
 	global $db;
 
-	$db->delete_query('settings', "name IN ('http_referrer_enable','sites_to_block','enable_lasers')");
+	$db->delete_query('settings', "name IN ('http_referrer_enable','sites_to_block','redirect_to')");
 	$db->delete_query('settinggroups', "name = 'referrer_block'");
 	rebuild_settings();
 }
